@@ -1,6 +1,6 @@
 from canvasapi import Canvas
 from canvasapi.exceptions import InvalidAccessToken
-from flask import Flask
+from flask import Flask, Response, stream_with_context
 from flask_cors import CORS
 from flask import request
 from flask import jsonify
@@ -10,7 +10,15 @@ import pandas as pd
 import copy
 import io # This will create a file in RAM instead of on disk
 
+# For debugging
+import queue
+import json
+
+
 API_URL = 'https://csusm.test.instructure.com/'
+
+# Global log queue - all parts of your app push to this
+log_queue = queue.Queue()
 
 canvas = None
 isAuthenticated = False
@@ -25,10 +33,12 @@ def processData():
 
     if canvas is not None and isAuthenticated:
         print('[Received course data]')
+        log_queue("token-verification", "Recieved course data\n\t" + "status: 200")
         instructor.addCourse(data['title'], int(data['courseId']), int(data['assignmentId']))
 
         return jsonify({"status": 200})
     else:
+        log_queue("token-verification", "Course data not recieved\n\t" + "status: 404")
         return jsonify({"status": 404})
 
 @app.route('/parseABET', methods=['POST'])
@@ -218,5 +228,28 @@ def convertABET(df, rubric):
         rubric_data['criteria'][str(i)]['points'] = rubric_data['criteria'][str(i)]['ratings']['1']['points']
     
     rubric.setRubricData(rubric_data)
+
+# For debugging
+def push_log(level: str, message: str, data=None):
+    entry = {"level": level, "message": message, "data": data}
+    log_queue.put(entry)
+
+@app.route("/console-stream")
+def console_stream():
+    def generate():
+        try:
+            entry = log_queue.get(timeout=30)
+            yield f"data: {json.dumps(entry)}\n\n"
+        except queue.Empty:
+            yield ": keepalive\n\n"         # prevents connection timeout
+    return Response(
+        stream_with_context(generate()),
+        mimetype="text/event-stream",
+        headers={
+            "Cache-Control": "no-cashe",
+            "X-Accel-Buffering": "no"
+        }
+    )
+
 
 app.run(debug=True, use_reloader=False)
