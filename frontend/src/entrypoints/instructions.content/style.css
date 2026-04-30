@@ -1,0 +1,42 @@
+/* SmartBridge Panel */
+.smartbridge-panel {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+
+  width: 500px;
+  max-width: 90vw;
+
+  max-height: 80vh;
+  overflow-y: auto; 
+
+  line-height: 1.4;
+
+  background: white;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  padding: 16px;
+
+  z-index: 9999999;
+  isolation: isolate; 
+  
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.smartbridge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+#close-panel {
+position: sticky;
+top: 0;
+    float: right;
+  background: none;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  line-height: 1;
+}

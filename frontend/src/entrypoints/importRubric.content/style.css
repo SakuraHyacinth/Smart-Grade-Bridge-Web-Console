@@ -1,0 +1,71 @@
+/* Font Imports */
+@import url('https://googleapis.com');
+
+/* Button Styling */
+#smartbridge-import-button {
+    box-sizing: border-box;
+    /* width: 100%; */
+    display: inline-block;
+    direction: inherit;
+    user-select: none;
+    transition: background 0.2s, transform 0.2s;
+    transform: none;
+
+    text-transform: none;
+    letter-spacing: normal;
+    border-style: solid;
+    border-width: 0.0625rem;
+    border-radius: 0.25rem;
+    line-height: 1.125;
+    text-align: center;
+
+    /* font */
+    font-family: LatoWeb, "Lato Extended", Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+
+    /* padding */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5625rem;
+    padding-bottom: 0.5625rem;
+
+    /* colors */
+    color: rgb(255, 255, 255);
+    background: #6d5999;
+    border-color: #3d2f5c;
+    box-shadow: none;
+}
+
+#smartbridge-import-button:hover {
+    background-color: #3d2f5c;
+    transition: outline-color 0.2s, outline-offset 0.25s;
+}
+
+/* Title Styling */
+#project-title {
+    display: block;
+    color: black;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: inherit;
+    padding-left: 25px;
+    padding-top: 0.5625rem;
+    padding-bottom: 0.5625rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+#title-border {
+    border-color: #8d959f;
+    margin: 5px;
+
+}
+
+button[data-testid="import-rubric-button"] {
+    display: none;
+}
+
+#smartbridge-error {
+    color: red;
+}
