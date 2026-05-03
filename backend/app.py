@@ -15,7 +15,13 @@ import queue
 import json
 
 
-API_URL = 'https://csusm.test.instructure.com/'
+API_URL = 'https://csusm.instructure.com/'
+
+# For debugging
+def push_log(level: str, message: str, data=None):
+    entry = {"level": level, "message": message, "data": data}
+    log_queue.put(entry)
+
 
 # Global log queue - all parts of your app push to this
 log_queue = queue.Queue()
@@ -33,12 +39,12 @@ def processData():
 
     if canvas is not None and isAuthenticated:
         print('[Received course data]')
-        log_queue("token-verification", "Recieved course data\n\t" + "status: 200")
+        push_log("info", "Received course data", {"status": 200})
         instructor.addCourse(data['title'], int(data['courseId']), int(data['assignmentId']))
 
         return jsonify({"status": 200})
     else:
-        log_queue("token-verification", "Course data not recieved\n\t" + "status: 404")
+        log_queue("error", "Course data not recieved" + {"status": 404})
         return jsonify({"status": 404})
 
 @app.route('/parseABET', methods=['POST'])
@@ -53,10 +59,12 @@ def parseABET():
         rubric = assignment.getRubric()
 
         print('[Received ABET rubric]')
+        push_log("info", "Recieved ABET rubric")
         convertABET(df, rubric)
 
         return jsonify({"status": 200})
     else:
+        push_log({"status": 404})
         return jsonify({"status": 404})
 
 @app.route('/createRubric', methods=['POST'])
@@ -70,9 +78,11 @@ def createRubric():
 
         createRubricInCanvas(course_info, assignment_info, rubric_data)
         print('[Rubric created]')
+        push_log("success", "Rubric created in Canvas")
 
         return jsonify({"status": 200})
     else:
+        push_log("error", "Rubric creation failed - not authenticated", {"status": 404})
         return jsonify({"status": 404})
 
 @app.route('/exportAssessment', methods=['POST'])
@@ -85,11 +95,14 @@ def exportAssessment():
         rubric_info = assignment_info.getRubric()
 
         print('[Received export request]')
+        push_log("info", "Export request recieved")
         response = exportAssessmentFromCanvas(course_info, assignment_info, rubric_info)
         print('[Rubric grades exported]')
+        push_log("success", "Rubric grades exported")
 
         return response, 200
     else:
+        push_log("error", "Export failed - not authenticated", {"status": 404})
         return "", 404
 
 @app.route('/uploadCanvasAPIKey', methods=['POST'])
@@ -104,9 +117,11 @@ def updateCanvasAPIKey():
     try:
         canvas.get_current_user()
         isAuthenticated = True
+        push_log("success", "Canvas API key accepted - authenticated")
         return jsonify({"status": 200})
     except InvalidAccessToken:
         isAuthenticated = False
+        push_log("error", "Canvas API key rejected - invalid token")
         return jsonify({"status": 404})
 
 def exportAssessmentFromCanvas(course_info, assignment_info, rubric_info):
@@ -229,27 +244,25 @@ def convertABET(df, rubric):
     
     rubric.setRubricData(rubric_data)
 
-# For debugging
-def push_log(level: str, message: str, data=None):
-    entry = {"level": level, "message": message, "data": data}
-    log_queue.put(entry)
 
 @app.route("/consoleStream")
 def console_stream():
     def generate():
-        try:
-            entry = log_queue.get(timeout=30)
-            yield f"data: {json.dumps(entry)}\n\n"
-        except queue.Empty:
-            yield ": keepalive\n\n"         # prevents connection timeout
+        while True:
+            try:
+                entry = log_queue.get(timeout=30)
+                yield f"data: {json.dumps(entry)}\n\n"
+            except queue.Empty:
+                yield ": keepalive\n\n"
     return Response(
         stream_with_context(generate()),
         mimetype="text/event-stream",
         headers={
-            "Cache-Control": "no-cashe",
+            "Cache-Control": "no-cache",
             "X-Accel-Buffering": "no"
         }
     )
 
 
-app.run(debug=True, use_reloader=False)
+if __name__ == "__main__":
+    app.run(debug=True, use_reloader=False)
