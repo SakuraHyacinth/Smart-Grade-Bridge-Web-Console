@@ -234,7 +234,7 @@ def push_log(level: str, message: str, data=None):
     entry = {"level": level, "message": message, "data": data}
     log_queue.put(entry)
 
-@app.route("/console-stream")
+@app.route("/consoleStream")
 def console_stream():
     def generate():
         try:
