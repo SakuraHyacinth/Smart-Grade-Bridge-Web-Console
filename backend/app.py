@@ -14,7 +14,7 @@ import io # This will create a file in RAM instead of on disk
 import queue
 import json
 
-
+# refers to prod for now but CHANGE BACK TO TEST ONCE IT IS BACK UP
 API_URL = 'https://csusm.instructure.com/'
 
 # For debugging
