@@ -1,15 +1,14 @@
-/* ─── Reset & Base ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   --font-ui: 'Syne', sans-serif;
 
-  --bg-base:    #0d0e11;
-  --bg-surface: #13151a;
-  --bg-panel:   #1a1c23;
-  --bg-hover:   #20232c;
-  --bg-active:  #252830;
+  --bg-base:    #0f0d11;
+  --bg-surface: #222130;
+  --bg-panel:   #1f1a23;
+  --bg-hover:   #27202c;
+  --bg-active:  #2b2530;
 
   --border:     rgba(255,255,255,0.07);
   --border-md:  rgba(255,255,255,0.11);
@@ -18,7 +17,8 @@
   --text-secondary: #8b8fa8;
   --text-muted:     #50546a;
 
-  --accent-info:    #4a9eff;
+  --accent-system: #9382b9;
+  --accent-info: #425db8;
   --accent-success: #3ecf8e;
   --accent-warn:    #f5a623;
   --accent-error:   #f25c5c;
@@ -43,14 +43,14 @@ html, body {
   overflow: hidden;
 }
 
-/* ─── Layout ────────────────────────────────────────────────── */
+/*Layout*/
 .layout {
   display: flex;
   height: 100vh;
   overflow: hidden;
 }
 
-/* ─── Sidebar ───────────────────────────────────────────────── */
+/*Sidebar*/
 .sidebar {
   width: var(--sidebar-w);
   min-width: var(--sidebar-w);
@@ -71,16 +71,17 @@ html, body {
 }
 
 .brand-icon {
-  width: 30px;
-  height: 30px;
-  background: var(--bg-panel);
-  border: 1px solid var(--border-md);
-  border-radius: 8px;
+  width: auto;
+  height: auto;
+  background: transparent;
+  border: none;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: var(--accent-info);
-  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 30px;
+  width: auto;
 }
 
 .brand-name {
@@ -180,7 +181,7 @@ html, body {
   cursor: pointer;
   flex-shrink: 0;
 }
-.toggle.active { background: var(--accent-info); border-color: transparent; }
+.toggle.active { background: var(--accent-system); border-color: transparent; }
 
 .toggle-knob {
   position: absolute;
@@ -220,7 +221,7 @@ html, body {
   color: var(--accent-error);
 }
 
-/* ─── Main ──────────────────────────────────────────────────── */
+/*Main*/
 .main {
   flex: 1;
   display: flex;
@@ -229,7 +230,7 @@ html, body {
   overflow: hidden;
 }
 
-/* ─── Topbar ────────────────────────────────────────────────── */
+/*Topbar*/
 .topbar {
   height: var(--topbar-h);
   display: flex;
@@ -323,7 +324,7 @@ html, body {
 .search-input::placeholder { color: var(--text-muted); }
 .search-input:focus { border-color: var(--border-md); }
 
-/* ─── Log Area ──────────────────────────────────────────────── */
+/*Log Area*/
 .log-area {
   flex: 1;
   overflow-y: auto;
@@ -336,7 +337,7 @@ html, body {
 .log-area::-webkit-scrollbar-track { background: transparent; }
 .log-area::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 99px; }
 
-/* ─── Empty State ───────────────────────────────────────────── */
+/*Empty State*/
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -350,7 +351,7 @@ html, body {
 .empty-title { font-size: 15px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
 .empty-sub { font-size: 13px; max-width: 340px; line-height: 1.6; }
 
-/* ─── Log Rows ──────────────────────────────────────────────── */
+/*Log Rows*/
 #log-container { display: flex; flex-direction: column; }
 
 .log-row {
@@ -434,7 +435,7 @@ html, body {
 .log-data .bool  { color: #c792ea; }
 .log-data .null  { color: var(--text-muted); }
 
-/* ─── Status Bar ────────────────────────────────────────────── */
+/*Status Bar*/
 .statusbar {
   height: var(--statusbar-h);
   display: flex;
@@ -453,5 +454,3 @@ html, body {
 
 #reconnect-label { color: var(--accent-warn); }
 
-/* ─── Scrollbar (Firefox) ───────────────────────────────────── */
-* { scrollbar-width: thin; scrollbar-color: var(--border-md) transparent; }

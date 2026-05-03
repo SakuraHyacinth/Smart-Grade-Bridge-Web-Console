@@ -8,7 +8,7 @@ interface LogEntry {
 }
 
 // ─── State ──────────────────────────────────────────────────
-const FLASK_URL = "http://localhost:5000/consoleStream";
+const FLASK_URL = "http://localhost:5000/events";
 
 let currentFilter: string = "all";
 let scrollLocked = false;
@@ -96,6 +96,14 @@ function appendLog(entry: LogEntry) {
 
   updateCounts();
 
+  function getBadgeLabel(level: LogLevel, message: string) {
+  if (message.includes("import")) return "IMPORT";
+  if (message.includes("export")) return "EXPORT";
+  if (message.includes("rubric")) return "RUBRIC";
+  if (message.includes("api")) return "API";
+  return level.toUpperCase();
+}
+
   const time = new Date().toLocaleTimeString("en-US", {
     hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit",
   });
@@ -114,7 +122,7 @@ function appendLog(entry: LogEntry) {
 
   const badge = document.createElement("span");
   badge.className = `log-badge ${entry.level}`;
-  badge.textContent = entry.level.toUpperCase();
+  badge.textContent = getBadgeLabel(entry.level, entry.message.toLowerCase());
 
   const msg = document.createElement("span");
   msg.className = "log-message";
@@ -217,6 +225,15 @@ expandToggle.addEventListener("click", () => {
   expandToggle.classList.toggle("active", expandData);
   document.querySelectorAll<HTMLElement>(".log-data").forEach((el) => {
     el.classList.toggle("visible", expandData);
+  });
+});
+
+document.querySelectorAll<HTMLElement>('.toggle-row').forEach(row => {
+  const toggle = row.querySelector<HTMLElement>('.toggle');
+
+  row.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('.toggle')) return;
+    toggle?.click();
   });
 });
 
