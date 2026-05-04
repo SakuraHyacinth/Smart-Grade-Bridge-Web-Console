@@ -1,4 +1,4 @@
-// ─── Types ──────────────────────────────────────────────────
+// Types
 type LogLevel = "info" | "success" | "warn" | "error";
 
 interface LogEntry {
@@ -7,7 +7,7 @@ interface LogEntry {
   data?: unknown;
 }
 
-// ─── State ──────────────────────────────────────────────────
+// State 
 const FLASK_URL = "http://localhost:5000/events";
 
 let currentFilter: string = "all";
@@ -22,7 +22,7 @@ const counts: Record<string, number> = {
   all: 0, info: 0, success: 0, warn: 0, error: 0,
 };
 
-// ─── DOM Refs ────────────────────────────────────────────────
+//DOM Refs
 const logContainer   = document.getElementById("log-container")!;
 const emptyState     = document.getElementById("empty-state")!;
 const statusDot      = document.getElementById("status-dot")!;
@@ -37,7 +37,7 @@ const timestampToggle = document.getElementById("timestamp-toggle")!;
 const expandToggle   = document.getElementById("expand-toggle")!;
 const btnClear       = document.getElementById("btn-clear")!;
 
-// ─── SSE Connection ──────────────────────────────────────────
+// SSE Connection
 function connect() {
   setStatus("reconnecting", "Connecting…");
   reconnectLabel.textContent = "";
@@ -76,7 +76,7 @@ function setStatus(state: "connected" | "disconnected" | "reconnecting", label: 
   statusLabel.textContent = label;
 }
 
-// ─── Syntax Highlight JSON ───────────────────────────────────
+//Syntax Highlight JSON
 function highlightJSON(json: string): string {
   return json
     .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(?:\s*:)?)/g, (match) => {
@@ -88,7 +88,7 @@ function highlightJSON(json: string): string {
     .replace(/\bnull\b/g, '<span class="null">null</span>');
 }
 
-// ─── Append Log ──────────────────────────────────────────────
+// Append Log
 function appendLog(entry: LogEntry) {
   totalCount++;
   counts.all++;
@@ -168,7 +168,7 @@ function appendLog(entry: LogEntry) {
   }
 }
 
-// ─── Visibility / Filter ─────────────────────────────────────
+// Visibility/Filter
 function applyVisibility(row: HTMLElement) {
   const level = row.dataset.level ?? "";
   const message = row.dataset.message ?? "";
@@ -185,7 +185,7 @@ function refilter() {
   rows.forEach(applyVisibility);
 }
 
-// ─── Count Updates ───────────────────────────────────────────
+//Count Updates
 function updateCounts() {
   (["all", "info", "success", "warn", "error"] as const).forEach((level) => {
     const el = document.getElementById(`count-${level}`);
@@ -193,7 +193,7 @@ function updateCounts() {
   });
 }
 
-// ─── Filter Nav ──────────────────────────────────────────────
+//Filter Nav
 document.querySelectorAll<HTMLButtonElement>(".nav-item").forEach((btn) => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".nav-item").forEach((b) => b.classList.remove("active"));
@@ -203,10 +203,10 @@ document.querySelectorAll<HTMLButtonElement>(".nav-item").forEach((btn) => {
   });
 });
 
-// ─── Search ──────────────────────────────────────────────────
+// Search
 searchInput.addEventListener("input", refilter);
 
-// ─── Toggles ─────────────────────────────────────────────────
+//Toggles
 scrollToggle.addEventListener("click", () => {
   scrollLocked = !scrollLocked;
   scrollToggle.classList.toggle("active", scrollLocked);
@@ -228,16 +228,9 @@ expandToggle.addEventListener("click", () => {
   });
 });
 
-document.querySelectorAll<HTMLElement>('.toggle-row').forEach(row => {
-  const toggle = row.querySelector<HTMLElement>('.toggle');
 
-  row.addEventListener('click', (e) => {
-    if ((e.target as HTMLElement).closest('.toggle')) return;
-    toggle?.click();
-  });
-});
 
-// ─── Clear ───────────────────────────────────────────────────
+//Clear
 btnClear.addEventListener("click", () => {
   logContainer.innerHTML = "";
   emptyState.style.display = "flex";
@@ -252,5 +245,5 @@ btnClear.addEventListener("click", () => {
   lastEventLabel.textContent = "—";
 });
 
-// ─── Boot ────────────────────────────────────────────────────
+// Boot 
 connect();
