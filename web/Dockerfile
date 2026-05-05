@@ -3,8 +3,9 @@ FROM node:20 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+RUN ls node_modules/.bin/
 COPY . .
-RUN npm run build
+RUN ./node_modules/.bin/tsc && ./node_modules/.bin/vite build
 
 FROM node:20
 WORKDIR /app
@@ -15,12 +16,3 @@ RUN npm install --production
 
 EXPOSE 5173
 CMD ["node", "server.js"]
-
-FROM node:20 AS builder
-
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-RUN chmod +x node_modules/.bin/tsc node_modules/.bin/vite
-COPY . .
-RUN npm run build
