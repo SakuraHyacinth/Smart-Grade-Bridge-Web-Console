@@ -3,9 +3,8 @@ FROM node:20 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
-RUN ls node_modules/.bin/
 COPY . .
-RUN ./node_modules/.bin/tsc && ./node_modules/.bin/vite build
+RUN npm run build
 
 FROM node:20
 WORKDIR /app
