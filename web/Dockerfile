@@ -1,4 +1,4 @@
-FROM node:20-slim AS builder
+FROM node:20 AS builder
 
 WORKDIR /app
 COPY package*.json ./
@@ -6,7 +6,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM node:20-slim
+FROM node:20
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY server.js .
@@ -15,3 +15,12 @@ RUN npm install --production
 
 EXPOSE 5173
 CMD ["node", "server.js"]
+
+FROM node:20 AS builder
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+RUN chmod +x node_modules/.bin/tsc node_modules/.bin/vite
+COPY . .
+RUN npm run build
