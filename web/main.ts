@@ -8,7 +8,7 @@ interface LogEntry {
 }
 
 // State 
-const FLASK_URL = "http://localhost:5000/events";
+const FLASK_URL = "http://localhost:5000/consoleStream";
 
 let currentFilter: string = "all";
 let scrollLocked = false;

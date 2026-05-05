@@ -15,7 +15,7 @@ import queue
 import json
 
 # refers to prod for now but CHANGE BACK TO TEST ONCE IT IS BACK UP
-API_URL = 'https://csusm.instructure.com/'
+API_URL = 'https://csusm.test.instructure.com/'
 
 # For debugging
 def push_log(level: str, message: str, data=None):
