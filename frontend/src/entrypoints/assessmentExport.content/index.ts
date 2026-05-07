@@ -36,7 +36,7 @@ if (document.getElementById('smartbridge-export-button')) return;
       assignmentId: assignmentId
     }
 
-    const response = await fetch("http://127.0.0.1:5000/exportAssessment", {
+    const response = await fetch("https://smart-grade-bridge-web-console-back.onrender.com/exportAssessment", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(courseData)

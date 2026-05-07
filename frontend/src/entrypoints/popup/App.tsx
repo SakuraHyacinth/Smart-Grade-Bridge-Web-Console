@@ -23,7 +23,7 @@ function App() {
         try {
           console.log(apiKey.trim());
           setIsLoading(true);
-          const response = await fetch('http://localhost:5000/uploadCanvasAPIKey', {
+          const response = await fetch('https://smart-grade-bridge-web-console-back.onrender.com/uploadCanvasAPIKey', {
             method: "POST",
             headers: {
               "Content-Type": "application/json"

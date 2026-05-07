@@ -53,13 +53,26 @@ function addImportButton(target: HTMLButtonElement) {
 
 
   // click behavior
-  button.addEventListener("click", () => {
+  button.addEventListener("click", async() => {
     console.log("Logging import button click");
 
     //if rubric exists, return error
     if (hasRubric()) {
       // showError("Rubric already applied", button);
       alert("Rubric already applied");
+
+      await fetch(
+        'https://smart-grade-bridge-web-console-back.onrender.com/log',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            level: "warn",
+            category: "RUBRIC",
+            message: "Assignment already contains a rubric"
+          })
+        }
+      );
       return;
 
     }
@@ -125,11 +138,11 @@ function openFileExplorer(courseId: string, assignmentId: string): void {
         rubric: rubricData
       };
 
-      await callEndpoint(courseData, 'http://localhost:5000/processData');
+      await callEndpoint(courseData, 'https://smart-grade-bridge-web-console-back.onrender.com/processData');
 
-      await callEndpoint(courseData, 'http://localhost:5000/parseABET');
+      await callEndpoint(courseData, 'https://smart-grade-bridge-web-console-back.onrender.com/parseABET');
 
-      await callEndpoint(courseData, 'http://127.0.0.1:5000/createRubric');
+      await callEndpoint(courseData, 'https://smart-grade-bridge-web-console-back.onrender.com/createRubric');
     }
     refreshPage();
   }
