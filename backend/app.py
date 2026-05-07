@@ -33,7 +33,7 @@ instructor = Instructor()
 app = Flask(__name__)
 
 # CORS(app)
-CORS(app, origins=["https://smart-grade-bridge-web-console.onrender.com/"])
+CORS(app)
 
 @app.route('/processData', methods=['POST'])
 def processData():
