@@ -45,7 +45,7 @@ def processData():
 
         return jsonify({"status": 200})
     else:
-        log_queue("error", "Course data not recieved" + {"status": 404})
+        push_log("error", "Course data not recieved" + {"status": 404})
         return jsonify({"status": 404})
 
 @app.route('/parseABET', methods=['POST'])
@@ -65,7 +65,7 @@ def parseABET():
 
         return jsonify({"status": 200})
     else:
-        push_log({"status": 404})
+        push_log("error", "ABET parse failed - not authenticated", {"status": 404})
         return jsonify({"status": 404})
 
 @app.route('/createRubric', methods=['POST'])

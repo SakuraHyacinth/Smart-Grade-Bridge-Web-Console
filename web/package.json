@@ -1,6 +1,7 @@
 {
   "name": "smart-grade-bridge-web-console",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -15,6 +16,5 @@
   "main": "server.js",
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "type": "module"
+  "license": "ISC"
 }
