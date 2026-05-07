@@ -1,7 +1,7 @@
 from canvasapi import Canvas
 from canvasapi.exceptions import InvalidAccessToken
 from flask import Flask, Response, stream_with_context
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask import request
 from flask import jsonify
 from flask import send_file
@@ -31,6 +31,7 @@ isAuthenticated = False
 instructor = Instructor()
 
 app = Flask(__name__)
+
 # CORS(app)
 CORS(app, origins=["https://smart-grade-bridge-web-console.onrender.com/"])
 
@@ -250,7 +251,7 @@ def convertABET(df, rubric):
 def status():
     return jsonify({"status": "OK", "message": "Lynn is lazy"}), 200
 
-
+@cross_origin()
 @app.route("/consoleStream")
 def console_stream():
     def generate():
