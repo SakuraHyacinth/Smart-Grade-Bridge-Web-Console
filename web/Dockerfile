@@ -1,12 +1,12 @@
-FROM node:20 AS builder
+FROM node:20-slim AS builder
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --include=dev
+RUN npm install
 COPY . .
-RUN npx vite build
+RUN ./node_modules/.bin/vite build
 
-FROM node:20
+FROM node:20-slim
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY server.js .
