@@ -261,7 +261,7 @@ def console_stream():
                 yield f"data: {json.dumps(entry)}\n\n"
             except queue.Empty:
                 yield ": keepalive\n\n"
-    return Response(
+    response = Response(
         stream_with_context(generate()),
         mimetype="text/event-stream",
         headers={
@@ -269,6 +269,8 @@ def console_stream():
             "X-Accel-Buffering": "no"
         }
     )
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 
 if __name__ == "__main__":
