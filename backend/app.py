@@ -32,7 +32,8 @@ isAuthenticated = False
 instructor = Instructor()
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
+CORS(app, origins=["https://smartbridge-web.onrender.com"])
 
 @app.route('/processData', methods=['POST'])
 def processData():

@@ -9,7 +9,7 @@ interface LogEntry {
 
 // State 
 // const FLASK_URL = "http://localhost:5000/consoleStream";
-const FLASK_URL = "https://your-flask-backend.onrender.com/consoleStream";
+const FLASK_URL = "https://smartbridge-backend.onrender.com/consoleStream";
 
 let currentFilter: string = "all";
 let scrollLocked = false;
