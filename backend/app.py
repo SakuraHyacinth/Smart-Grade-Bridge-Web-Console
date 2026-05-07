@@ -246,6 +246,11 @@ def convertABET(df, rubric):
     rubric.setRubricData(rubric_data)
 
 
+@app.route('/status', methods=['GET'])
+def status():
+    return jsonify({"status": "OK", "message": "Lynn is lazy"}), 200
+
+
 @app.route("/consoleStream")
 def console_stream():
     def generate():
